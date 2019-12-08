@@ -61,7 +61,10 @@
 				"controlId": "app",
 				"controlAggregation": "pages",
 				"transition": "slide",
-				"async": true
+				"async": true,
+				"bypassed" : {
+					"target" : "notFound"
+				}
 			},
 			"routes": [{
 				"pattern": "",
@@ -73,6 +76,11 @@
 					"viewId": "home",
 					"viewName": "Home",
 					"viewLevel": 1
+				},
+				"notFound" : { 
+					"viewId" : "notFound",
+					"viewName" : "NotFound",
+					"transition" : "show"
 				}
 			}
 		}
