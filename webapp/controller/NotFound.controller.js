@@ -20,8 +20,8 @@ sap.ui.define([
                 delete this._oData.fromTarget;
                 return;
             }
-
-            BaseController.prototype.onNavBack.apply(this.arguments);
+            // console.log(this.arguments);
+            // BaseController.prototype.onNavBack.apply(this.arguments);
         }
     });
 })
