@@ -26,6 +26,8 @@ sap.ui.define([
 						rootUri: oMainDataSource.uri
 					});
 
+					console.log(sMetadataUrl)
+
 					// configure
 					MockServer.config({
 						autoRespond: true,
