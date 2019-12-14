@@ -1,0 +1,3 @@
+<mvc:View xmlns="sap.m" xmls:mvc="sap.ui.core.mvc">
+    <Text text="{Information}"/>
+</mvc:View>

@@ -29,9 +29,15 @@ sap.ui.define([
                     }
                 }
             });
+            //탭에 따라 parameter를 정함
             let query = oArgs["?query"];
-            if(query && _aValidTabKeys.indexOf(Query.tab) > -1){
+            console.log(oArgs);
+            if(query !== undefined && _aValidTabKeys.indexOf(query.tab) > -1){
                 oView.getModel("view").setProperty("/selectedTabKey",query.tab);
+                if(query.tab === 'Hobbies' || query.tab === 'Notes'){
+                    console.log(query.tab);
+                    this.getRouter().getTargets().display("resumeTab" + query.tab);
+                }
             }else{
                 this.getRouter().navTo("employeeResume",{
                     employeeId : oArgs.employeeId,
@@ -39,6 +45,7 @@ sap.ui.define([
                         tab  : _aValidTabKeys[0]
                     }
                 },true);
+                //url에 매칭되는 값이 없을 경우 info로 매칭됨
             }
         },
         _onBindingChange : function(oEvent){
