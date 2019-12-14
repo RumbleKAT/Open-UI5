@@ -16,7 +16,7 @@ sap.ui.define([
             oView = this.getView();
             
             oView.bindElement({
-                path : "/Employees("+oArgs.employeeId+")",
+                path : `/Employees(${oArgs.employeeId})`,
                 events : {
                     change : this._onBindingChange.bind(this),
                     dataRequested : function(oEvent){
@@ -35,6 +35,14 @@ sap.ui.define([
             if(!this.getView().getBindingContext()){
                 this.getRouter().getTargets().display("notFound");
             }
+        },
+
+        onShowResume : function(oEvent){
+            var context =  this.getView().getBindingContext();
+            console.log(context.getProperty("EmployeeId"));
+            this.getRouter().navTo("employeeResume",{
+                employeeId : context.getProperty("EmployeeID")
+            })
         }
     })
 })
