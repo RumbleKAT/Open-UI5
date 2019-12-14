@@ -39,7 +39,7 @@ sap.ui.define([
 
         onShowResume : function(oEvent){
             var context =  this.getView().getBindingContext();
-            console.log(context.getProperty("EmployeeId"));
+            // console.log(context.getProperty("EmployeeId"));
             this.getRouter().navTo("employeeResume",{
                 employeeId : context.getProperty("EmployeeID")
             })
