@@ -16,6 +16,9 @@ sap.ui.define([
         onNavToEmployees : function(){
             console.log("Clicked!");
             this.getRouter().navTo("employeeList");
+        },
+        onNavToEmployeeOverview : function(oEvent){
+            this.getRouter().navTo("employeeOverview"); //manifest의 target 정보 세팅 필요함
         }
     });
 })
