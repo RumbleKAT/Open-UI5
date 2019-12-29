@@ -77,7 +77,7 @@
 			}, {
 				"pattern": "employees/overview",
 				"name": "employeeOverview",
-				"target": ["EmployeeOverviewTop", "EmployeeOverviewContent"]
+				"target": ["employeeOverviewTop", "employeeOverviewContent"]
 			}, {
 				"pattern": "employees/{employeeId}",
 				"name": "employee",
@@ -131,22 +131,22 @@
 					"controlId": "notesTab",
 					"controlAggregation": "content"
 				},
-				"EmployeeOverview": {
+				"employeeOverview": {
 					"viewId": "employeeOverview",
 					"viewPath": "sap.ui.demo.nav.view.employee.overview",
 					"viewName": "EmployeeOverview",
 					"viewLevel" : 2
 				},
-				"EmployeeOverviewTop": {
-					"parent": "EmployeeOverview",
+				"employeeOverviewTop": {
+					"parent": "employeeOverview",
 					"viewId": "employeeOverviewTop",
 					"viewPath": "sap.ui.demo.nav.view.employee.overview",
 					"viewName": "EmployeeOverviewTop",
 					"controlId": "EmployeeOverviewParent",
 					"controlAggregation": "content"
 				},
-				"EmployeeOverviewContent": {
-					"parent": "EmployeeOverview",
+				"employeeOverviewContent": {
+					"parent": "employeeOverview",
 					"viewId": "employeeOverviewContent",
 					"viewPath": "sap.ui.demo.nav.view.employee.overview",
 					"viewName": "EmployeeOverviewContent",

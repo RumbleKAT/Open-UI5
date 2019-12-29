@@ -2,21 +2,46 @@ sap.ui.define([
     "sap/ui/demo/nav/controller/BaseController",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/Sorter"
-], function (BaseController,Filter, FilterOperator, Sorter) {
+    "sap/ui/model/Sorter",
+    "sap/m/ViewSettingsDialog",
+    "sap/m/ViewSettingsItem"
+], function (BaseController,Filter, FilterOperator, Sorter, ViewSettingsDialog, ViewSettingsItem) {
     "use strict";
     return BaseController.extend("sap.ui.demo.nav.controller.employee.overview.EmployeeOverview", {
         onInit: function(){
+            var oRouter = this.getRouter();
             this._oTable = this.byId("employeesTable");
-            this._oVSD = null;
-            this._sSortField = null;
-            this._bSortDescending = false;
-            this._aValidSortFields = ["EmployeeID","FirstName","LastName"];
+            this._oVSD = null; 
+            this._sSortField = null; 
+            this._bSortDescending = false; 
+            this._aValidSortFields = ["EmployeeID", "FirstName", "LastName"];
             this._sSearchQuery = null;
+            this._oRouterArgs = null;
             this._initViewSettingsDialog();
+            // make the search bookmarkable
+            oRouter.getRoute("employeeOverview").attachMatched(this._onRouteMatched, this);
+        },
+        _onRouteMatched : function(oEvent){
+            this._oRouterArgs = oEvent.getParameter("arguments");
+            this._oRouterArgs.query = this._oRouterArgs["?query"] || {};
+            delete this._oRouterArgs["?query"];
+            if (this._oRouterArgs.query) {
+                // search/filter via URL hash
+                this._applySearchFilter(this._oRouterArgs.query.search);
+                // sorting via URL hash
+                this._applySorter(this._oRouterArgs.query.sortField, this._oRouterArgs.query.sortDescending);
+                // show dialog via URL hash
+                if (!!this._oRouterArgs.query.showDialog) {
+                    this._oVSD.open();
+                }
+            }
         },
         onSortButtonPressed : function (oEvent) {
-            this._oVSD.open();
+            var oRouter = this.getRouter();
+            // console.log(this._oRouterArgs);
+            this._oRouterArgs.query.showDialog = 1;
+            oRouter.navTo("employeeOverview",this._oRouterArgs);
+        
         },
         onSearchEmployeesTable : function (oEvent) {
             // var sQuery = oEvent.getSource().getValue();
@@ -27,7 +52,15 @@ sap.ui.define([
             this._oVSD = new sap.m.ViewSettingsDialog("vsd",{
                 confirm : function(oEvent) {
                     var oSortItem = oEvent.getParameter("sortItem");
-                    this._applySorter(oSortItem.getKey(),oEvent.getParameter("sortDescending"));
+                    this._oRouterArgs.query.sortField = oSortItem.getKey();
+                    this._oRouterArgs.query.sortDescending = oEvent.getParameter("sortDescending");
+                    delete this._oRouterArgs.query.showDialog;
+                    oRouter.navTo("employeeOverview",this._oRouterArgs, true /*without history*/);
+                }.bind(this),
+                cancel : function(oEvent){
+                    //event bubbling 막음
+                    delete this._oRouterArgs.query.showDialog;
+                    oRouter.navTo("employeeOverview",this._oRouterArgs,true);
                 }.bind(this)
             }).addSortItem(new sap.m.ViewSettingsItem({
                 key: "EmployeeID",
@@ -94,7 +127,19 @@ sap.ui.define([
         _syncViewSettingDialogSorter : function(sSortField, bSortDescending){
             this._oVSD.setSelectedSortItem(sSortField);
             this._oVSD.setSortDescending(bSortDescending);
-        }   
+        },
+
+        onItemPressed : function (oEvent) {
+            var oItem, oCtx, oRouter;
+            oItem = oEvent.getParameter("listItem");
+            oCtx = oItem.getBindingContext();
+            this.getRouter().navTo("employeeResume",{
+                employeeId : oCtx.getProperty("EmployeeID"),
+                query : {
+                    tab : "Info"
+                }
+            });
+        }
 
     });
 });
